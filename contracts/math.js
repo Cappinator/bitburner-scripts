@@ -3,14 +3,10 @@
 export async function Factorize(ns, n, inclusive = true) {
   let answer = [];
   let sqr = Math.floor(Math.sqrt(n));
-//  let wait = "";
   for (let i = sqr; i >= 2; i--) {
     if (n % i == 0) {
       answer.push(i);
-//      ns.tprint(wait + i);
-//      wait = "";
     } else {
-//      wait += ".";
     }
   }
   for (let i of answer) {

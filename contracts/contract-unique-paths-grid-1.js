@@ -4,7 +4,6 @@ export async function main(ns, data = ns.args[0], portId = ns.args[1]) {
   let input = JSON.parse(data);
   let rows = input[0];
   let cols = input[1];
-  //rows = ns.args[0], cols = ns.args[1]
 
   let cells = new Array(rows);
   for (let i=0;i<rows;i++) {

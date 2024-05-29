@@ -2,7 +2,6 @@
 export async function main(ns, data = ns.args[0], portId = ns.args[1]) {
 
   let matrix = Array.from(JSON.parse(data));
-//  ns.tprint(matrix);
   let ar = [];
 
   while (matrix.length>0) {
@@ -27,8 +26,6 @@ export async function main(ns, data = ns.args[0], portId = ns.args[1]) {
   }
   let answer = ar.filter(c => c != null);
   
-//  ns.tprint(answer);
-
   let output = JSON.stringify(answer);
   ns.writePort(portId, output);
 
