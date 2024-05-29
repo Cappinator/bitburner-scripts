@@ -48,6 +48,7 @@ export async function TestSolutions(ns) {
   types[ContractTypes.TotalWaysToSum] = "contracts/contract-total-ways-to-sum.js";
 
   types[ContractTypes.SpiralizeMatrix] = "contracts/spiralize-matrix.js";
+  types[ContractTypes.ArrayJumpingGame] = "contracts/array-jumping-game.js";
   
   types[ContractTypes.UniquePathsInAGridI] = "contracts/contract-unique-paths-grid-1.js";
 
@@ -105,9 +106,7 @@ async function SolveContract(ns, ctype, cdata) {
       ns.run("contracts/spiralize-matrix.js", 1, data, PORT); 
       break;
     case ContractTypes.ArrayJumpingGame:
-      ns.tprint("TODO: implement solution for '" + ctype + "'");
-      return;
-
+      ns.run("contracts/array-jumping-game.js", 1, data, PORT);
       break;
     case ContractTypes.ArrayJumpingGameII:
       ns.tprint("TODO: implement solution for '" + ctype + "'");
