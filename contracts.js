@@ -50,6 +50,8 @@ export async function TestSolutions(ns) {
   types[ContractTypes.SpiralizeMatrix] = "contracts/spiralize-matrix.js";
   types[ContractTypes.ArrayJumpingGame] = "contracts/array-jumping-game.js";
   
+  types[ContractTypes.GenerateIPAddresses] = "contracts/generate-ip-address.js";
+
   types[ContractTypes.UniquePathsInAGridI] = "contracts/contract-unique-paths-grid-1.js";
 
   types[ContractTypes.HammingCodesIntegerToEncodedBinary] = "contracts/hammingcodes-integer-to-encoded-binary.js";
@@ -120,9 +122,7 @@ async function SolveContract(ns, ctype, cdata) {
 
       break;
     case ContractTypes.GenerateIPAddresses:
-      ns.tprint("TODO: implement solution for '" + ctype + "'");
-      return;
-
+      ns.run("contracts/generate-ip-address.js", 1, data, PORT);
       break;
     case ContractTypes.AlgorithmicStockTraderI:
       ns.tprint("TODO: implement solution for '" + ctype + "'");
