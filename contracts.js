@@ -29,7 +29,7 @@ export async function ProcessContract(ns, file, servername) {
   if (answer != undefined) {
 //    ns.tprint("The answer = " + answer);
     let result = ns.codingcontract.attempt(answer, file, servername);
-    let resultString = servername + ":" + file + ":Answer (" + answer + ") submitted, ";
+    let resultString = servername + ":" + file + " (Type:" + ctype + "):Answer (" + answer + ") submitted, ";
     if (result == "") {
       resultString += "but was \u001b[31;1mnot accepted\u001b[0m! ";
       let tries = ns.codingcontract.getNumTriesRemaining(file, servername);
@@ -55,6 +55,7 @@ export async function TestSolutions(ns) {
   types[ContractTypes.HammingCodesIntegerToEncodedBinary] = "contracts/hammingcodes-integer-to-encoded-binary.js";
 
   types[ContractTypes.CompressionIRLECompression] = "contracts/contract-rle.js";
+  types[ContractTypes.CompressionIILZDecompression] = "contracts/compression-ii-lz-decompression.js";
 
   // Check if we have any existing dummy contracts on the home computer
   let files = ns.ls("home", ".cct");
@@ -188,9 +189,7 @@ async function SolveContract(ns, ctype, cdata) {
       ns.run("contracts/contract-rle.js", 1, data, PORT);
       break;
     case ContractTypes.CompressionIILZDecompression:
-      ns.tprint("TODO: implement solution for '" + ctype + "'");
-      return;
-
+      ns.run("contracts/compression-ii-lz-decompression.js", 1, data, PORT);
       break;
     case ContractTypes.CompressionIIILZCompression:
       ns.tprint("TODO: implement solution for '" + ctype + "'");
@@ -227,7 +226,7 @@ async function AttemptContract(ns) {
 
   let result = ns.codingcontract.attempt(answer, filename, host);
   if (result === "") {
-     failure
+     //failure
   } else {
      ns.tprint(result);
   }
