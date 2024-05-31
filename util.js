@@ -43,6 +43,23 @@ export async function GetAvailableThreads(ns, server, script, ignoreUsedRam = fa
   let smem = ns.getScriptRam(script);
   return Math.floor(mem/smem);
 }
+
+export async function NukeServer(ns, target) {
+  let n = target.name;
+  if (ns.fileExists("BruteSSH.exe", "home"))
+    await ns.brutessh(n);
+  if (ns.fileExists("FTPCrack.exe", "home"))
+    await ns.ftpcrack(n);
+  if (ns.fileExists("relaySMTP.exe", "home"))
+    await ns.relaysmtp(n);
+  if (ns.fileExists("HTTPWorm.exe", "home"))
+    await ns.httpworm(n);
+  if (ns.fileExists("SQLInject.exe", "home"))
+    await ns.sqlinject(n);
+  await ns.nuke(n);
+  target.nuked = true;
+}
+
 /*
 export async function main(ns) {
 	const colors = {

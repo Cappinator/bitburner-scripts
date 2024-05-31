@@ -1,4 +1,4 @@
-import { GetHackTargets, GetPortHacks, GetAvailableThreads, RESERVE_MEMORY_FOR_CONTRACTS } from "util.js";
+import { GetHackTargets, GetPortHacks, GetAvailableThreads, RESERVE_MEMORY_FOR_CONTRACTS, NukeServer } from "util.js";
 
 const REMOTE_HACK_SCRIPT = "remote-hack.js";
 const MONITOR_SCRIPT = "monitor.js";
@@ -45,21 +45,4 @@ async function SetupRemoteHacks(ns, servers) {
   }
   let ph = await GetPortHacks(ns);
   ns.spawn(MONITOR_SCRIPT, 1, target.name, ns.getHackingLevel(), ph);
-}
-
-async function NukeServer(ns, target) {
-  let n = target.name;
-//  ns.print("nuking server: " + n);
-  if (ns.fileExists("BruteSSH.exe", "home"))
-    await ns.brutessh(n);
-  if (ns.fileExists("FTPCrack.exe", "home"))
-    await ns.ftpcrack(n);
-  if (ns.fileExists("relaySMTP.exe", "home"))
-    await ns.relaysmtp(n);
-  if (ns.fileExists("HTTPWorm.exe", "home"))
-    await ns.httpworm(n);
-  if (ns.fileExists("SQLInject.exe", "home"))
-    await ns.sqlinject(n);
-  await ns.nuke(n);
-  target.nuked = true;
 }
