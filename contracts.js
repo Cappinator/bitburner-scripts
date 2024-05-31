@@ -43,24 +43,25 @@ export async function ProcessContract(ns, file, servername) {
 
 export async function TestSolutions(ns) {
   let types = { };
-  types[ContractTypes.FindLargestPrimeFactor] = "contracts/find-largest-prime-factor.js";
+//  types[ContractTypes.FindLargestPrimeFactor] = "contracts/find-largest-prime-factor.js";
+  types[ContractTypes.SubarrayWithMaximumSum] = "contracts/subarray-with-maximum-sum.js";
 
-  types[ContractTypes.TotalWaysToSum] = "contracts/contract-total-ways-to-sum.js";
+//  types[ContractTypes.TotalWaysToSum] = "contracts/contract-total-ways-to-sum.js";
 
-  types[ContractTypes.SpiralizeMatrix] = "contracts/spiralize-matrix.js";
-  types[ContractTypes.ArrayJumpingGame] = "contracts/array-jumping-game.js";
+//  types[ContractTypes.SpiralizeMatrix] = "contracts/spiralize-matrix.js";
+//  types[ContractTypes.ArrayJumpingGame] = "contracts/array-jumping-game.js";
   
-  types[ContractTypes.GenerateIPAddresses] = "contracts/generate-ip-address.js";
+//  types[ContractTypes.GenerateIPAddresses] = "contracts/generate-ip-address.js";
 
-  types[ContractTypes.UniquePathsInAGridI] = "contracts/contract-unique-paths-grid-1.js";
+//  types[ContractTypes.UniquePathsInAGridI] = "contracts/contract-unique-paths-grid-1.js";
 
-  types[ContractTypes.HammingCodesIntegerToEncodedBinary] = "contracts/hammingcodes-integer-to-encoded-binary.js";
+//  types[ContractTypes.HammingCodesIntegerToEncodedBinary] = "contracts/hammingcodes-integer-to-encoded-binary.js";
 
-  types[ContractTypes.CompressionIRLECompression] = "contracts/contract-rle.js";
-  types[ContractTypes.CompressionIILZDecompression] = "contracts/compression-ii-lz-decompression.js";
+//  types[ContractTypes.CompressionIRLECompression] = "contracts/contract-rle.js";
+//  types[ContractTypes.CompressionIILZDecompression] = "contracts/compression-ii-lz-decompression.js";
 
-  types[ContractTypes.EncryptionICaesarCipher] = "contracts/encryption-i-caesar-cipher.js";
-  types[ContractTypes.EncryptionIIVigenereCipher] = "contracts/encryption-ii-vigenere-cipher.js";
+//  types[ContractTypes.EncryptionICaesarCipher] = "contracts/encryption-i-caesar-cipher.js";
+//  types[ContractTypes.EncryptionIIVigenereCipher] = "contracts/encryption-ii-vigenere-cipher.js";
 
   // Check if we have any existing dummy contracts on the home computer
   let files = ns.ls("home", ".cct");
@@ -93,12 +94,11 @@ async function SolveContract(ns, ctype, cdata) {
 
   switch (ctype) {
     case ContractTypes.FindLargestPrimeFactor:
-      ns.run("contracts/find-largest-prime-factor.js", 1, data, PORT);      
+      ns.run("contracts/find-largest-prime-factor.js", 1, data, PORT);
       break;
     case ContractTypes.SubarrayWithMaximumSum:
-      ns.tprint("TODO: implement solution for '" + ctype + "'");
-      return;
-
+      ns.run("contracts/subarray-with-maximum-sum.js", 1, data, PORT);   
+    
       break;
     case ContractTypes.TotalWaysToSum:
       ns.run("contracts/contract-total-ways-to-sum.js", 1, data, PORT);
