@@ -1,14 +1,19 @@
-import { GetHackTargets, GetPortHacks, GetAvailableThreads } from "util.js";
+import { GetHackTargets, GetPortHacks, GetAvailableThreads, RESERVE_MEMORY_FOR_CONTRACTS } from "util.js";
 
 const REMOTE_HACK_SCRIPT = "remote-hack.js";
 const MONITOR_SCRIPT = "monitor.js";
+const CONTRACTS_SCRIPT = "contracts.js";
 
 /** @param {NS} ns */
 export async function main(ns, param = ns.args[0]) {
   if (param == "-l") {
     let servers = await GetHackTargets(ns);
     let target = servers.shift();
-    let t = await GetAvailableThreads(ns, "home", REMOTE_HACK_SCRIPT);
+    let contractsScript = "";
+    if (RESERVE_MEMORY_FOR_CONTRACTS) {
+      contractsScript = CONTRACTS_SCRIPT;
+    }
+    let t = await GetAvailableThreads(ns, "home", REMOTE_HACK_SCRIPT, false, contractsScript);
     if (t > 0)
       ns.run(REMOTE_HACK_SCRIPT, t, target.name);
   } else {

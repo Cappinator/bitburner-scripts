@@ -1,6 +1,7 @@
-import { GetHackTargets, GetPortHacks, GetAvailableThreads } from "util.js";
+import { GetHackTargets, GetPortHacks, GetAvailableThreads, RESERVE_MEMORY_FOR_CONTRACTS } from "util.js";
 
 const REMOTE_HACK_SCRIPT = "remote-hack.js";
+const CONTRACTS_SCRIPT = "contracts.js";
 
 var hackservers = 0;
 var porthacks = 0;
@@ -10,8 +11,11 @@ var pid = 0;
 export async function main(ns, target = ns.args[0], hs = ns.args[1], ph = ns.args[2]) {
   hackservers = hs;
   porthacks = ph;
-
-  let th = await GetAvailableThreads(ns, "home", REMOTE_HACK_SCRIPT);
+  let contractsScript = "";
+  if (RESERVE_MEMORY_FOR_CONTRACTS) {
+    contractsScript = CONTRACTS_SCRIPT;
+  }
+  let th = await GetAvailableThreads(ns, "home", REMOTE_HACK_SCRIPT, false, contractsScript);
   if (th > 0) {
     pid = ns.run(REMOTE_HACK_SCRIPT, th, target);
   }
@@ -28,6 +32,13 @@ export async function main(ns, target = ns.args[0], hs = ns.args[1], ph = ns.arg
         ns.kill(pid);
       }
       ns.spawn("setup.js", 1);
+    }
+
+    // run contracts script
+    let th = await GetAvailableThreads(ns, "home", CONTRACTS_SCRIPT);
+    if (th > 0) {
+      ns.print("Checking for contracts...");
+      ns.run(CONTRACTS_SCRIPT);
     }
   }
 }

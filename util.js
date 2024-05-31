@@ -1,5 +1,8 @@
 import { ScanServers, SortByMoney, FilterHackableServers } from "discover.js";
 
+export const RESERVE_MEMORY_FOR_CONTRACTS = true;
+export const EXTRA_CONTRACTS_MEM = 3.6;
+
 export async function GetHackTargets(ns) {
   let ph = await GetPortHacks(ns);
   let hs = ns.getHackingLevel();
@@ -12,7 +15,8 @@ export async function GetHackTargets(ns) {
   let sortedServers = await SortByMoney(ns, filteredServers);
 //  ns.print("Sorted by Money:");
 //  ns.print(sortedServers);
-  return sortedServers;
+  let noHomeServers = sortedServers.filter(s => s.name != "home");
+  return noHomeServers;
 }
 
 export async function GetPortHacks(ns) {
@@ -30,10 +34,12 @@ export async function GetPortHacks(ns) {
   return portHacks;
 }
 
-export async function GetAvailableThreads(ns, server, script, ignoreUsedRam = false) {
+export async function GetAvailableThreads(ns, server, script, ignoreUsedRam = false, reserveMemForScript = "") {
   let mem = ns.getServerMaxRam(server);
   if (!ignoreUsedRam)
     mem -= ns.getServerUsedRam(server);
+  if (reserveMemForScript != "")
+    mem -= (ns.getScriptRam(reserveMemForScript)+EXTRA_CONTRACTS_MEM);
   let smem = ns.getScriptRam(script);
   return Math.floor(mem/smem);
 }

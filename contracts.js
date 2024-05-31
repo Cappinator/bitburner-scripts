@@ -59,6 +59,8 @@ export async function TestSolutions(ns) {
   types[ContractTypes.CompressionIRLECompression] = "contracts/contract-rle.js";
   types[ContractTypes.CompressionIILZDecompression] = "contracts/compression-ii-lz-decompression.js";
 
+  types[ContractTypes.EncryptionIIVigenereCipher] = "contracts/encryption-ii-vigenere-cipher.js";
+
   // Check if we have any existing dummy contracts on the home computer
   let files = ns.ls("home", ".cct");
   if (files.length == 0) {
@@ -202,9 +204,7 @@ async function SolveContract(ns, ctype, cdata) {
 
       break;
     case ContractTypes.EncryptionIIVigenereCipher:
-      ns.tprint("TODO: implement solution for '" + ctype + "'");
-      return;
-
+      ns.run("contracts/encryption-ii-vigenere-cipher.js", 1, data, PORT);
       break;
   }
 
