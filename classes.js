@@ -1,6 +1,6 @@
 export class ServerData {
 
-  constructor(name, root, ram, hackSkill, secLevel, maxMoney, reqPorts) {
+  constructor(name, root, ram, hackSkill, secLevel, maxMoney, reqPorts, path) {
     this.name = name;
     this.root = root;
     this.ram = ram;
@@ -10,6 +10,7 @@ export class ServerData {
     this.reqPorts = reqPorts;
     this.nuked = false;
     this.backdoor = false;
+    this.path = path;
   }
 
   print(ns) {
@@ -29,3 +30,5 @@ export class ServerData {
   }
 
 }
+
+

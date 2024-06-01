@@ -1,6 +1,7 @@
 import { ServerData } from "classes.js";
 var servers = [];
 var serversToScan = [];
+var paths;
 
 export async function ScanServers(ns) {
   servers = [];
@@ -24,15 +25,19 @@ export async function FilterHackableServers(ns, serversToFilter, mp, hs) {
 }
 
 async function PopulateServersToScan(ns) {
+  paths = new Object();
   serversToScan = ["home"];
+  paths["home"] = [];
   let idx = 0;
   while(idx < serversToScan.length) {
     let serverName = serversToScan[idx++];
     let s = await ns.scan(serverName);
     for(let i=0;i<s.length;i++) {
       let sn = s[i];
-      if(!serversToScan.includes(sn))
+      if(!serversToScan.includes(sn)) {
         serversToScan.push(sn);
+        paths[sn] = paths[serverName].concat(new Array(serverName));
+      }
     }
   }
 }
@@ -54,7 +59,7 @@ async function ScanServer(ns, serverName) {
   let maxMoney = ns.getServerMaxMoney(serverName);
   let reqPorts = ns.getServerNumPortsRequired(serverName);
 
-  let sd = new ServerData(serverName, root, ram, hackSkill, secLevel, maxMoney, reqPorts);
+  let sd = new ServerData(serverName, root, ram, hackSkill, secLevel, maxMoney, reqPorts, paths[serverName]);
 //  ns.print(sd);
   servers.push(sd);
 
