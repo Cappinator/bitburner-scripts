@@ -50,12 +50,13 @@ export async function TestSolutions(ns) {
 
 //  types[ContractTypes.SpiralizeMatrix] = "contracts/spiralize-matrix.js";
 //  types[ContractTypes.ArrayJumpingGame] = "contracts/array-jumping-game.js";
-types[ContractTypes.ArrayJumpingGameII] = "contracts/array-jumping-game-ii.js";
+//types[ContractTypes.ArrayJumpingGameII] = "contracts/array-jumping-game-ii.js";
   
 //  types[ContractTypes.GenerateIPAddresses] = "contracts/generate-ip-address.js";
 
 //  types[ContractTypes.UniquePathsInAGridI] = "contracts/contract-unique-paths-grid-1.js";
 
+types[ContractTypes.ShortestPathInAGrid] = "contracts/shortest-path-in-a-grid.js";
 //  types[ContractTypes.HammingCodesIntegerToEncodedBinary] = "contracts/hammingcodes-integer-to-encoded-binary.js";
 
 //  types[ContractTypes.CompressionIRLECompression] = "contracts/contract-rle.js";
@@ -160,9 +161,7 @@ async function SolveContract(ns, ctype, cdata) {
 
       break;
     case ContractTypes.ShortestPathInAGrid:
-      ns.tprint("TODO: implement solution for '" + ctype + "'");
-      return;
-
+        ns.run("contracts/shortest-path-in-a-grid.js", 1, data, PORT);
       break;
     case ContractTypes.SanitizeParenthesesInExpression:
       ns.tprint("TODO: implement solution for '" + ctype + "'");
