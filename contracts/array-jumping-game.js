@@ -17,7 +17,6 @@ export async function main(ns, cdata = ns.args[0], portId = ns.args[1]) {
       data[lastIdx]--;
       idx = lastIdx = 0;
     }
-
   }
 
   let answer = JSON.stringify(success?1:0);
