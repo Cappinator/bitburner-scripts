@@ -31,9 +31,9 @@ export async function ProcessContract(ns, file, servername) {
     let result = ns.codingcontract.attempt(answer, file, servername);
     let resultString = servername + ":" + file + " (Type:" + ctype + "):Answer (" + answer + ") submitted, ";
     if (result == "") {
-      resultString += "but was \u001b[31;1mnot accepted\u001b[0m! ";
-      let tries = ns.codingcontract.getNumTriesRemaining(file, servername);
-      resultString += "(tries remaining:" + tries + ")";
+      resultString += "but was \u001b[31;1mnot accepted\u001b[0m!";
+      if (ns.fileExists(file))
+        resultString += " (tries remaining:" + ns.codingcontract.getNumTriesRemaining(file, servername) + ")";
     } else {
       resultString += "and was \u001b[32;1maccepted\u001b[0m: " + result;
     }
@@ -44,12 +44,13 @@ export async function ProcessContract(ns, file, servername) {
 export async function TestSolutions(ns) {
   let types = { };
 //  types[ContractTypes.FindLargestPrimeFactor] = "contracts/find-largest-prime-factor.js";
-  types[ContractTypes.SubarrayWithMaximumSum] = "contracts/subarray-with-maximum-sum.js";
+//  types[ContractTypes.SubarrayWithMaximumSum] = "contracts/subarray-with-maximum-sum.js";
 
 //  types[ContractTypes.TotalWaysToSum] = "contracts/contract-total-ways-to-sum.js";
 
 //  types[ContractTypes.SpiralizeMatrix] = "contracts/spiralize-matrix.js";
 //  types[ContractTypes.ArrayJumpingGame] = "contracts/array-jumping-game.js";
+types[ContractTypes.ArrayJumpingGameII] = "contracts/array-jumping-game-ii.js";
   
 //  types[ContractTypes.GenerateIPAddresses] = "contracts/generate-ip-address.js";
 
@@ -115,9 +116,7 @@ async function SolveContract(ns, ctype, cdata) {
       ns.run("contracts/array-jumping-game.js", 1, data, PORT);
       break;
     case ContractTypes.ArrayJumpingGameII:
-      ns.tprint("TODO: implement solution for '" + ctype + "'");
-      return;
-
+      ns.run("contracts/array-jumping-game-ii.js", 1, data, PORT);
       break;
     case ContractTypes.MergeOverlappingIntervals:
       ns.tprint("TODO: implement solution for '" + ctype + "'");
