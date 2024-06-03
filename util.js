@@ -1,6 +1,6 @@
 import { ScanServers, SortByMoney, FilterHackableServers } from "discover.js";
 
-export const RESERVE_MEMORY_FOR_CONTRACTS = true;
+//export const RESERVE_MEMORY_FOR_CONTRACTS = true;
 export const EXTRA_CONTRACTS_MEM = 3.6;
 
 export async function GetHackTargets(ns) {
@@ -58,6 +58,24 @@ export async function NukeServer(ns, target) {
     await ns.sqlinject(n);
   await ns.nuke(n);
   target.nuked = true;
+}
+
+export async function ShowGrid(ns, ar) {
+  let str1 = "";
+  ar.forEach(row => {
+    str1 = "";
+    let str2 = "";
+    row.forEach(cell => {
+      let val = cell < 100 ? (cell < 10 && cell >= 0 ? " " + cell + " " : " " + cell) : cell;
+      str1 += "+-----";
+      str2 += "| " + val + " ";
+    });
+    str1 += "+";
+    str2 += "|";
+    ns.tprint(str1);
+    ns.tprint(str2);
+  });
+  ns.tprint(str1);
 }
 
 /*

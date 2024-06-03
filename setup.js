@@ -1,21 +1,26 @@
-import { GetHackTargets, GetPortHacks, GetAvailableThreads, RESERVE_MEMORY_FOR_CONTRACTS, NukeServer } from "util.js";
+import { GetHackTargets, GetPortHacks, GetAvailableThreads, NukeServer } from "util.js";
 
 const REMOTE_HACK_SCRIPT = "remote-hack.js";
 const MONITOR_SCRIPT = "monitor.js";
 const CONTRACTS_SCRIPT = "contracts.js";
+const EXTRA_CONTRACTS_MEM = 3.6;
 
 /** @param {NS} ns */
-export async function main(ns, param = ns.args[0]) {
-  if (param == "-l") {
+export async function main(ns, param1 = ns.args[0], param2 = ns.args[1]) {
+  if (param1 == "-l") {
     let servers = await GetHackTargets(ns);
     let target = servers.shift();
-    let contractsScript = "";
-    if (RESERVE_MEMORY_FOR_CONTRACTS) {
-      contractsScript = CONTRACTS_SCRIPT;
-    }
-    let t = await GetAvailableThreads(ns, "home", REMOTE_HACK_SCRIPT, false, contractsScript);
-    if (t > 0)
+    if (param2 == "-i") {
+      let t = await GetAvailableThreads(ns, "home", REMOTE_HACK_SCRIPT);
       ns.run(REMOTE_HACK_SCRIPT, t, target.name);
+    } else {
+      let contractsMem = ns.getScriptRam(CONTRACTS_SCRIPT);
+      let memFree = ns.getServerMaxRam("home") - ns.getServerUsedRam("home") - EXTRA_CONTRACTS_MEM - contractsMem;
+      if (memFree >= 0) {
+        let t = await GetAvailableThreads(ns, "home", REMOTE_HACK_SCRIPT, false, CONTRACTS_SCRIPT);
+        ns.run(REMOTE_HACK_SCRIPT, t, target.name);
+      }
+    }
   } else {
     let servers = await GetHackTargets(ns);
     await SetupRemoteHacks(ns, servers);
