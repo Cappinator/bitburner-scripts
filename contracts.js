@@ -54,9 +54,10 @@ export async function TestSolutions(ns) {
   
 //  types[ContractTypes.GenerateIPAddresses] = "contracts/generate-ip-address.js";
 
-//  types[ContractTypes.UniquePathsInAGridI] = "contracts/contract-unique-paths-grid-1.js";
+//  types[ContractTypes.UniquePathsInAGridI] = "contracts/unique-paths-in-a-grid-i.js";
+types[ContractTypes.UniquePathsInAGridII] = "contracts/unique-paths-in-a-grid-ii.js";
 
-types[ContractTypes.ShortestPathInAGrid] = "contracts/shortest-path-in-a-grid.js";
+//types[ContractTypes.ShortestPathInAGrid] = "contracts/shortest-path-in-a-grid.js";
 //  types[ContractTypes.HammingCodesIntegerToEncodedBinary] = "contracts/hammingcodes-integer-to-encoded-binary.js";
 
 //  types[ContractTypes.CompressionIRLECompression] = "contracts/contract-rle.js";
@@ -153,12 +154,10 @@ async function SolveContract(ns, ctype, cdata) {
 
       break;
     case ContractTypes.UniquePathsInAGridI:
-      ns.run("contracts/contract-unique-paths-grid-1.js", 1, data, PORT);
+      ns.run("contracts/unique-paths-in-a-grid-i.js", 1, data, PORT);
       break;
     case ContractTypes.UniquePathsInAGridII:
-      ns.tprint("TODO: implement solution for '" + ctype + "'");
-      return;
-
+      ns.run("contracts/unique-paths-in-a-grid-ii.js", 1, data, PORT);
       break;
     case ContractTypes.ShortestPathInAGrid:
         ns.run("contracts/shortest-path-in-a-grid.js", 1, data, PORT);
