@@ -21,10 +21,45 @@ export async function main(ns, param = ns.args[0], params = ns.args[1]) {
     case "bitwise-and":
       await TestBitwiseAnd(ns, params);
       break;
+    default:
+      await TestNewHackingAlgorithm(ns);
   }
 
 
 }
+
+async function TestNewHackingAlgorithm(ns) {
+  let target = "omega-net";
+  let mults = ns.getHackingMultipliers();
+  ns.tprint(mults);
+  await PrepareServer(ns, target);
+}
+
+async function PrepareServer(ns, server) {
+  // We need the security as low as possible
+  let minSecLevel = ns.getServerMinSecurityLevel(server);
+  let maxMoney = ns.getServerMaxMoney(server);
+  let curSecLevel = ns.getServerSecurityLevel(server);
+  ns.tprint("Name: " + server + " | MinSec: " + minSecLevel + " | CurSecLevel: " + curSecLevel + " | maxMoney: " + maxMoney);
+  let weakenTime = ns.formulas.hacking.weakenTime(ns.getServer(server), ns.getPlayer());
+  ns.tprint("Weaken time: " + weakenTime);
+  let t = await GetThreadsForWeaken(ns, server);
+  ns.tprint("We need to weaken with " + t + " threads to lower the security level to below minimum level");
+
+}
+
+async function GetThreadsForWeaken(ns, server, cores = 1) {
+  let minSecLevel = ns.getServerMinSecurityLevel(server);
+  let curSecLevel = ns.getServerSecurityLevel(server);
+  let i = 0;
+  let effect = 0;
+  while(curSecLevel - effect > minSecLevel) {
+    effect = ns.weakenAnalyze(i++, cores);
+  }
+  return i;
+}
+
+
 
 async function SortArrayTest(ns) {
   let ar = [ 10, 5, 0, 3, -5, 5, 3, -20];
