@@ -3,6 +3,14 @@ var servers = [];
 var serversToScan = [];
 var paths;
 
+export async function main(ns) {
+  let servers = await ScanServers(ns);
+  servers = await FilterHackableServers(ns, servers, 2, ns.getHackingLevel());
+  servers = await SortByMoney(ns, servers);
+  servers = servers.filter(s => s.ram > 5);
+  servers.forEach(s => s.info(ns));
+}
+
 export async function ScanServers(ns) {
   servers = [];
   serversToScan = ["home"];
@@ -18,7 +26,6 @@ export async function SortByMoney(ns, serversToFilter) {
 export async function FilterHackableServers(ns, serversToFilter, mp, hs) {
   let filteredServers = serversToFilter.filter(function(sd) {
     let t = sd.reqPorts <= mp && sd.hackSkill <= hs;
-    ns.print("Checking if " + sd.reqPorts + " <= " + mp + " ? " + t);
     return(t);
   });
   return filteredServers;
@@ -50,7 +57,6 @@ async function ProcessServersToScan(ns) {
 }
 
 async function ScanServer(ns, serverName) {
-//  ns.print("Scanning server: " + serverName);
 
   let root = ns.hasRootAccess(serverName);
   let ram = ns.getServerMaxRam(serverName);
@@ -60,7 +66,6 @@ async function ScanServer(ns, serverName) {
   let reqPorts = ns.getServerNumPortsRequired(serverName);
 
   let sd = new ServerData(serverName, root, ram, hackSkill, secLevel, maxMoney, reqPorts, paths[serverName]);
-//  ns.print(sd);
   servers.push(sd);
 
 }
