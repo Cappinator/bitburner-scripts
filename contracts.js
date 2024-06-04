@@ -51,11 +51,12 @@ export async function TestSolutions(ns) {
 //  types[ContractTypes.SpiralizeMatrix] = "contracts/spiralize-matrix.js";
 //  types[ContractTypes.ArrayJumpingGame] = "contracts/array-jumping-game.js";
 //types[ContractTypes.ArrayJumpingGameII] = "contracts/array-jumping-game-ii.js";
-  
+  types[ContractTypes.MergeOverlappingIntervals] = "contracts/merge-overlapping-intervals.js";
+
 //  types[ContractTypes.GenerateIPAddresses] = "contracts/generate-ip-address.js";
 
 //  types[ContractTypes.UniquePathsInAGridI] = "contracts/unique-paths-in-a-grid-i.js";
-types[ContractTypes.UniquePathsInAGridII] = "contracts/unique-paths-in-a-grid-ii.js";
+//types[ContractTypes.UniquePathsInAGridII] = "contracts/unique-paths-in-a-grid-ii.js";
 
 //types[ContractTypes.ShortestPathInAGrid] = "contracts/shortest-path-in-a-grid.js";
 //  types[ContractTypes.HammingCodesIntegerToEncodedBinary] = "contracts/hammingcodes-integer-to-encoded-binary.js";
@@ -121,9 +122,7 @@ async function SolveContract(ns, ctype, cdata) {
       ns.run("contracts/array-jumping-game-ii.js", 1, data, PORT);
       break;
     case ContractTypes.MergeOverlappingIntervals:
-      ns.tprint("TODO: implement solution for '" + ctype + "'");
-      return;
-
+      ns.run("contracts/merge-overlapping-intervals.js", 1, data, PORT);
       break;
     case ContractTypes.GenerateIPAddresses:
       ns.run("contracts/generate-ip-address.js", 1, data, PORT);
