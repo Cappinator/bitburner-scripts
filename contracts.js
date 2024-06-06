@@ -51,7 +51,7 @@ export async function TestSolutions(ns) {
 //  types[ContractTypes.SpiralizeMatrix] = "contracts/spiralize-matrix.js";
 //  types[ContractTypes.ArrayJumpingGame] = "contracts/array-jumping-game.js";
 //types[ContractTypes.ArrayJumpingGameII] = "contracts/array-jumping-game-ii.js";
-  types[ContractTypes.MergeOverlappingIntervals] = "contracts/merge-overlapping-intervals.js";
+//  types[ContractTypes.MergeOverlappingIntervals] = "contracts/merge-overlapping-intervals.js";
 
 //  types[ContractTypes.GenerateIPAddresses] = "contracts/generate-ip-address.js";
 
@@ -59,8 +59,9 @@ export async function TestSolutions(ns) {
 //types[ContractTypes.UniquePathsInAGridII] = "contracts/unique-paths-in-a-grid-ii.js";
 
 //types[ContractTypes.ShortestPathInAGrid] = "contracts/shortest-path-in-a-grid.js";
-//  types[ContractTypes.HammingCodesIntegerToEncodedBinary] = "contracts/hammingcodes-integer-to-encoded-binary.js";
+  types[ContractTypes.HammingCodesIntegerToEncodedBinary] = "contracts/hammingcodes-integer-to-encoded-binary.js";
 
+//types[ContractTypes.Proper2ColoringOfAGraph] = "contracts/proper-2coloring-of-a-graph.js";
 //  types[ContractTypes.CompressionIRLECompression] = "contracts/contract-rle.js";
 //  types[ContractTypes.CompressionIILZDecompression] = "contracts/compression-ii-lz-decompression.js";
 
@@ -101,8 +102,7 @@ async function SolveContract(ns, ctype, cdata) {
       ns.run("contracts/find-largest-prime-factor.js", 1, data, PORT);
       break;
     case ContractTypes.SubarrayWithMaximumSum:
-      ns.run("contracts/subarray-with-maximum-sum.js", 1, data, PORT);   
-    
+      ns.run("contracts/subarray-with-maximum-sum.js", 1, data, PORT);
       break;
     case ContractTypes.TotalWaysToSum:
       ns.run("contracts/contract-total-ways-to-sum.js", 1, data, PORT);
@@ -180,9 +180,7 @@ async function SolveContract(ns, ctype, cdata) {
 
       break;
     case ContractTypes.Proper2ColoringOfAGraph:
-      ns.tprint("TODO: implement solution for '" + ctype + "'");
-      return;
-
+      ns.run("contracts/proper-2coloring-of-a-graph.js", 1, data, PORT);
       break;
     case ContractTypes.CompressionIRLECompression:
       ns.run("contracts/contract-rle.js", 1, data, PORT);
