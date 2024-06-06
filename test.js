@@ -29,10 +29,12 @@ export async function main(ns, param = ns.args[0], params = ns.args[1]) {
 }
 
 async function TestNewHackingAlgorithm(ns) {
-  let target = "omega-net";
-  let mults = ns.getHackingMultipliers();
-  ns.tprint(mults);
-  await PrepareServer(ns, target);
+  let target = "the-hub";
+  let server = "avmnite-02h";
+//  let mults = ns.getHackingMultipliers();
+//  ns.tprint(mults);
+//  await PrepareServer(ns, target);
+  await DeployLoopHackAlgorithms(ns, server, target);
 }
 
 async function PrepareServer(ns, server) {
@@ -45,7 +47,6 @@ async function PrepareServer(ns, server) {
   ns.tprint("Weaken time: " + weakenTime);
   let t = await GetThreadsForWeaken(ns, server);
   ns.tprint("We need to weaken with " + t + " threads to lower the security level to below minimum level");
-
 }
 
 async function GetThreadsForWeaken(ns, server, cores = 1) {
@@ -53,20 +54,36 @@ async function GetThreadsForWeaken(ns, server, cores = 1) {
   let curSecLevel = ns.getServerSecurityLevel(server);
   let i = 0;
   let effect = 0;
-  while(curSecLevel - effect > minSecLevel) {
+  while (curSecLevel - effect > minSecLevel) {
     effect = ns.weakenAnalyze(i++, cores);
   }
   return i;
 }
 
-
+async function DeployLoopHackAlgorithms(ns, server, target) {
+  let ht = 1;
+  let gt = 10;
+  let wt = 2;
+  let tt = ht + gt + wt;
+  ns.killall(server);
+  ns.scp(["lw.js", "lh.js", "lg.js"], server);
+  let block = ns.getScriptRam("lw.js", server);
+  let free = ns.getServerMaxRam(server) - ns.getServerUsedRam(server);
+  let totalThreads = Math.floor(free / block);
+  ns.print("Total threads = " + totalThreads);
+  let mult = Math.floor(totalThreads / tt);
+  ns.print("multiplier = " + mult);
+  ns.exec("lh.js", server, mult * ht, target);
+  ns.exec("lw.js", server, mult * wt, target);
+  ns.exec("lg.js", server, mult * gt, target); 
+}
 
 async function SortArrayTest(ns) {
-  let ar = [ 10, 5, 0, 3, -5, 5, 3, -20];
+  let ar = [10, 5, 0, 3, -5, 5, 3, -20];
   ns.tprint(ar);
   ns.tprint("----------------------------");
 
-  let ar2 = ar.sort((a,b) => a-b);
+  let ar2 = ar.sort((a, b) => a - b);
   ns.tprint(ar);
   ns.tprint(ar2);
   ns.tprint("----------------------------");
@@ -88,51 +105,51 @@ async function TestContractSolutions(ns) {
 
 async function LZDecomp(ns, compr) {
 
-        let plain = "";
+  let plain = "";
 
-        for (let i = 0; i < compr.length;) {
-            const literal_length = compr.charCodeAt(i) - 0x30;
+  for (let i = 0; i < compr.length;) {
+    const literal_length = compr.charCodeAt(i) - 0x30;
 
-            if (literal_length < 0 || literal_length > 9 || i + 1 + literal_length > compr.length) {
-                return null;
-            }
+    if (literal_length < 0 || literal_length > 9 || i + 1 + literal_length > compr.length) {
+      return null;
+    }
 
-            plain += compr.substring(i + 1, i + 1 + literal_length);
-            i += 1 + literal_length;
+    plain += compr.substring(i + 1, i + 1 + literal_length);
+    i += 1 + literal_length;
 
-            if (i >= compr.length) {
-                break;
-            }
-            const backref_length = compr.charCodeAt(i) - 0x30;
+    if (i >= compr.length) {
+      break;
+    }
+    const backref_length = compr.charCodeAt(i) - 0x30;
 
-            if (backref_length < 0 || backref_length > 9) {
-                return null;
-            } else if (backref_length === 0) {
-                ++i;
-            } else {
-                if (i + 1 >= compr.length) {
-                    return null;
-                }
+    if (backref_length < 0 || backref_length > 9) {
+      return null;
+    } else if (backref_length === 0) {
+      ++i;
+    } else {
+      if (i + 1 >= compr.length) {
+        return null;
+      }
 
-                const backref_offset = compr.charCodeAt(i + 1) - 0x30;
-                if ((backref_length > 0 && (backref_offset < 1 || backref_offset > 9)) || backref_offset > plain.length) {
-                    return null;
-                }
+      const backref_offset = compr.charCodeAt(i + 1) - 0x30;
+      if ((backref_length > 0 && (backref_offset < 1 || backref_offset > 9)) || backref_offset > plain.length) {
+        return null;
+      }
 
-                for (let j = 0; j < backref_length; ++j) {
-                    plain += plain[plain.length - backref_offset];
-                }
+      for (let j = 0; j < backref_length; ++j) {
+        plain += plain[plain.length - backref_offset];
+      }
 
-                i += 2;
-            }
-        }
+      i += 2;
+    }
+  }
 
-        ns.tprint(plain);
+  ns.tprint(plain);
 
 }
 
 async function TestBitwiseAnd(ns, number) {
-  for (let i=1; i<16;i++) {
+  for (let i = 1; i < 16; i++) {
     let result = number & i;
     ns.tprint(number + " & " + i + " = " + result);
   }
