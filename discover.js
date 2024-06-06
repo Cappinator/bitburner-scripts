@@ -24,11 +24,11 @@ export async function SortByMoney(ns, serversToFilter) {
 }
 
 export async function FilterHackableServers(ns, serversToFilter, mp, hs) {
-  let filteredServers = serversToFilter.filter(function(sd) {
-    let t = sd.reqPorts <= mp && sd.hackSkill <= hs;
-    return(t);
-  });
-  return filteredServers;
+  return serversToFilter.filter(sd => sd.reqPorts <= mp && sd.hackSkill <= hs);
+}
+
+export async function FilterByMem(ns, serversToFilter, minMem) {
+  return serversToFilter.filter(s => s.ram >= minMem)
 }
 
 async function PopulateServersToScan(ns) {
