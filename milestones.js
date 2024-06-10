@@ -13,10 +13,17 @@ export async function main(ns) {
   await FindServer(ns, servers, "I.I.I.I");
   // run4theh111z
   await FindServer(ns, servers, "run4theh111z");
+  // the-cave
+  await FindServer(ns, servers, "The-Cave");
 }
 
 async function FindServer(ns, servers, name) {
-  let server = servers.filter(s => s.name == name)[0];
-  ns.tprint(server.name + ": " + server.path.join(" > "));
+  let f = servers.filter(s => s.name == name);
+  if (f.length > 0) {
+    let server = f[0];
+    ns.tprint(server.name + ": " + server.path.join(" > "));
+  } else {
+    ns.tprint("Could not find " + name);
+  }
   
 }
