@@ -1,53 +1,41 @@
-import { GetHackTargets, GetPortHacks, GetAvailableThreads, NukeServer } from "util.js";
+import { GetHackTargets, GetPortHacks, GetScriptHosts, DeployHackScripts } from "util.js";
 
-const REMOTE_HACK_SCRIPT = "remote-hack.js";
 const MONITOR_SCRIPT = "monitor.js";
 const CONTRACTS_SCRIPT = "contracts.js";
 const EXTRA_CONTRACTS_MEM = 3.6;
 
 /** @param {NS} ns */
 export async function main(ns, param1 = ns.args[0], param2 = ns.args[1]) {
+  let targets = await GetHackTargets(ns);
   if (param1 == "-l") {
-    let servers = await GetHackTargets(ns);
-    let target = servers.shift();
+    let target = targets[0];
     if (param2 == "-i") {
-      let t = await GetAvailableThreads(ns, "home", REMOTE_HACK_SCRIPT);
-      ns.run(REMOTE_HACK_SCRIPT, t, target.name);
+      await SetupHacks(ns, ["home"], [target]);
     } else {
       let contractsMem = ns.getScriptRam(CONTRACTS_SCRIPT);
-      let memFree = ns.getServerMaxRam("home") - ns.getServerUsedRam("home") - EXTRA_CONTRACTS_MEM - contractsMem;
-      if (memFree >= 0) {
-        let t = await GetAvailableThreads(ns, "home", REMOTE_HACK_SCRIPT, false, CONTRACTS_SCRIPT);
-        ns.run(REMOTE_HACK_SCRIPT, t, target.name);
-      }
+      await SetupHacks(ns, ["home"], [target], contractsMem + EXTRA_CONTRACTS_MEM);
     }
   } else {
-    let servers = await GetHackTargets(ns);
-    await SetupRemoteHacks(ns, servers);
+    let hosts = await GetScriptHosts(ns, 1);
+    ns.tprint(hosts);
+    let contractsMem = ns.getScriptRam(CONTRACTS_SCRIPT);
+    await SetupHacks(ns, hosts, targets, contractsMem + EXTRA_CONTRACTS_MEM);
+    let ph = await GetPortHacks(ns);
+    ns.spawn(MONITOR_SCRIPT, 1, targets.length, ph);
   }
 }
 
-async function SetupRemoteHacks(ns, servers) {
-  let target = servers.shift();
-  // nuke target
-  await NukeServer(ns, target);
-  for(let i=0;i<servers.length;i++) {
-    let s = servers[i];
-    await NukeServer(ns, s);
-    // check if a remote hack script is already running, and what its target is
-    let psinfo = ns.ps(s.name).filter(info => info.filename == REMOTE_HACK_SCRIPT);
-    if (psinfo.length > 0) {
-      let t = psinfo[0].args[0];
-      // if it's a different target, kill the old script first
-      if (t != target.name) {
-        ns.kill(REMOTE_HACK_SCRIPT, s.name, psinfo[0].args[0]);
-      }
+async function SetupHacks(ns, hosts, targets, leaveMem) {
+  let targetIdx = 0;
+  for (let host of hosts) {
+    if (targetIdx >= targets.length) {
+      break;
     }
-    ns.scp(REMOTE_HACK_SCRIPT, s.name);
-    let t = await GetAvailableThreads(ns, s.name, REMOTE_HACK_SCRIPT);
-    if (t > 0)
-      ns.exec(REMOTE_HACK_SCRIPT, s.name, t, target.name);
+    let target = targets[targetIdx++];
+    if (host.name == "home") {
+      await DeployHackScripts(ns, host, target, leaveMem);
+    } else {
+      await DeployHackScripts(ns, host, target);
+    }
   }
-  let ph = await GetPortHacks(ns);
-  ns.spawn(MONITOR_SCRIPT, 1, target.name, ns.getHackingLevel(), ph);
 }

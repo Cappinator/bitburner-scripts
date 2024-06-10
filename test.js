@@ -1,4 +1,5 @@
 import { TestSolutions } from "contracts.js";
+import {DeployLoopHackAlgorithms } from "util.js";
 
 /** @param {NS} ns */
 export async function main(ns, param = ns.args[0], params = ns.args[1]) {
@@ -60,23 +61,7 @@ async function GetThreadsForWeaken(ns, server, cores = 1) {
   return i;
 }
 
-async function DeployLoopHackAlgorithms(ns, server, target) {
-  let ht = 1;
-  let gt = 10;
-  let wt = 2;
-  let tt = ht + gt + wt;
-  ns.killall(server);
-  ns.scp(["lw.js", "lh.js", "lg.js"], server);
-  let block = ns.getScriptRam("lw.js", server);
-  let free = ns.getServerMaxRam(server) - ns.getServerUsedRam(server);
-  let totalThreads = Math.floor(free / block);
-  ns.print("Total threads = " + totalThreads);
-  let mult = Math.floor(totalThreads / tt);
-  ns.print("multiplier = " + mult);
-  ns.exec("lh.js", server, mult * ht, target);
-  ns.exec("lw.js", server, mult * wt, target);
-  ns.exec("lg.js", server, mult * gt, target); 
-}
+
 
 async function SortArrayTest(ns) {
   let ar = [10, 5, 0, 3, -5, 5, 3, -20];

@@ -19,12 +19,20 @@ export async function ScanServers(ns) {
   return servers;
 }
 
-export async function SortByMoney(ns, serversToFilter) {
-  return serversToFilter.sort((a,b) => b.maxMoney-a.maxMoney );
+export async function SortByMoney(ns, serversToSort) {
+  return serversToSort.sort((a, b) => b.maxMoney - a.maxMoney);
+}
+
+export async function SortByMem(ns, serversToSort) {
+  return serversToSort.sort((a, b) => b.ram - a.ram);
 }
 
 export async function FilterHackableServers(ns, serversToFilter, mp, hs) {
-  return serversToFilter.filter(sd => sd.reqPorts <= mp && sd.hackSkill <= hs);
+  return serversToFilter.filter(sd => (sd.reqPorts <= mp && sd.hackSkill <= hs) || sd.name == "home");
+}
+
+export async function FilterZeroMoneyServers(ns, serversToFilter) {
+  return serversToFilter.filter(sd => sd.maxMoney > 0);
 }
 
 export async function FilterByMem(ns, serversToFilter, minMem) {
@@ -36,12 +44,12 @@ async function PopulateServersToScan(ns) {
   serversToScan = ["home"];
   paths["home"] = [];
   let idx = 0;
-  while(idx < serversToScan.length) {
+  while (idx < serversToScan.length) {
     let serverName = serversToScan[idx++];
     let s = await ns.scan(serverName);
-    for(let i=0;i<s.length;i++) {
+    for (let i = 0; i < s.length; i++) {
       let sn = s[i];
-      if(!serversToScan.includes(sn)) {
+      if (!serversToScan.includes(sn)) {
         serversToScan.push(sn);
         paths[sn] = paths[serverName].concat(new Array(serverName));
       }
@@ -50,9 +58,9 @@ async function PopulateServersToScan(ns) {
 }
 
 async function ProcessServersToScan(ns) {
-  while(serversToScan.length > 0) {
+  while (serversToScan.length > 0) {
     let serverName = serversToScan.shift();
-    await ScanServer(ns, serverName);    
+    await ScanServer(ns, serverName);
   }
 }
 
