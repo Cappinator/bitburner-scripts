@@ -19,7 +19,7 @@ export async function main(ns, hs = ns.args[0], ph = ns.args[1]) {
 
     if (changed) {
       ns.print("Number of hack targets has changed (probably due to increase in hacking skill or unlocking additional hacking programs). Running setup again...");
-      await KillHackScripts(ns, "host");
+      await KillHackScripts(ns, "home");
       ns.spawn("setup.js", 1);
     }
 
