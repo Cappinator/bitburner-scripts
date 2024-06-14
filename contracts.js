@@ -10,7 +10,7 @@ export async function main(ns) {
 
 export async function FindAndSolveContracts(ns) {
   let servers = await ScanServers(ns);
-  ns.tprint("Looking for contracts...");
+//  ns.tprint("Looking for contracts...");
   for (let server of servers) {
     let files = ns.ls(server.name, ".cct");
 //    if (files.length == 0)
@@ -47,6 +47,7 @@ export async function TestSolutions(ns) {
 //  types[ContractTypes.SubarrayWithMaximumSum] = "contracts/subarray-with-maximum-sum.js";
 
 //  types[ContractTypes.TotalWaysToSum] = "contracts/contract-total-ways-to-sum.js";
+types[ContractTypes.TotalWaysToSumII] = "contracts/total-ways-to-sum-ii.js";
 
 //  types[ContractTypes.SpiralizeMatrix] = "contracts/spiralize-matrix.js";
 //  types[ContractTypes.ArrayJumpingGame] = "contracts/array-jumping-game.js";
@@ -59,7 +60,7 @@ export async function TestSolutions(ns) {
 //types[ContractTypes.UniquePathsInAGridII] = "contracts/unique-paths-in-a-grid-ii.js";
 
 //types[ContractTypes.ShortestPathInAGrid] = "contracts/shortest-path-in-a-grid.js";
-  types[ContractTypes.HammingCodesIntegerToEncodedBinary] = "contracts/hammingcodes-integer-to-encoded-binary.js";
+//types[ContractTypes.HammingCodesIntegerToEncodedBinary] = "contracts/hammingcodes-integer-to-encoded-binary.js";
 
 //types[ContractTypes.Proper2ColoringOfAGraph] = "contracts/proper-2coloring-of-a-graph.js";
 //  types[ContractTypes.CompressionIRLECompression] = "contracts/contract-rle.js";
@@ -108,9 +109,7 @@ async function SolveContract(ns, ctype, cdata) {
       ns.run("contracts/contract-total-ways-to-sum.js", 1, data, PORT);
       break;
     case ContractTypes.TotalWaysToSumII:
-      ns.tprint("TODO: implement solution for '" + ctype + "'");
-      return;
-
+      ns.run("contracts/total-ways-to-sum-ii.js", 1, data, PORT);
       break;
     case ContractTypes.SpiralizeMatrix:
       ns.run("contracts/spiralize-matrix.js", 1, data, PORT); 
