@@ -26,7 +26,7 @@ export async function ProcessContract(ns, file, servername) {
   let cdata = ns.codingcontract.getData(file, servername);
   let answer = await SolveContract(ns, ctype, cdata);
 //  ns.tprint(server.name + " has contract " + file + " of type " + ctype + " with data " + cdata);
-  if (answer != undefined) {
+  if (answer != undefined && answer != null) {
 //    ns.tprint("The answer = " + answer);
     let result = ns.codingcontract.attempt(answer, file, servername);
     let resultString = servername + ":" + file + " (Type:" + ctype + "):Answer (" + answer + ") submitted, ";
@@ -93,7 +93,13 @@ types[ContractTypes.TotalWaysToSumII] = "contracts/total-ways-to-sum-ii.js";
 }
 
 async function SolveContract(ns, ctype, cdata) {
-  let data = JSON.stringify(cdata);
+  let data;
+	try {
+		data = JSON.stringify(cdata);
+	} catch(err) {
+		ns.tprint("Error while trying to solve " + ctype + ": " + err);
+		return null;
+	}
   let answer = "";
   let port = ns.getPortHandle(PORT);
   port.clear();
@@ -198,6 +204,8 @@ async function SolveContract(ns, ctype, cdata) {
     case ContractTypes.EncryptionIIVigenereCipher:
       ns.run("contracts/encryption-ii-vigenere-cipher.js", 1, data, PORT);
       break;
+		default:
+			return null;
   }
 
   let timeout = 500;

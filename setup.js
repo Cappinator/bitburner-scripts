@@ -17,7 +17,7 @@ export async function main(ns, param1 = ns.args[0], param2 = ns.args[1]) {
     }
   } else {
     let hosts = await GetScriptHosts(ns, 1);
-    ns.tprint(hosts);
+    //ns.tprint(hosts);
     let contractsMem = ns.getScriptRam(CONTRACTS_SCRIPT);
     await SetupHacks(ns, hosts, targets, contractsMem + EXTRA_CONTRACTS_MEM);
     let ph = await GetPortHacks(ns);
